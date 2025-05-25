@@ -76,6 +76,7 @@ public class VistaCategoEditar extends SubScene {
         // Carga la imagen inicial después de que la interfaz esté lista
         actualizarPreviewImagen(Ruta.RUTA_FOTOS + Configuracion.SEPARADOR_CARPETA + objCategoria.getNomImgPubCategoria());
     }
+     cargarImgExistente();
 
     public StackPane getMiFormulario() {
         return miFormulario;
@@ -253,5 +254,27 @@ public class VistaCategoEditar extends SubScene {
             return false;
         }
         return true;
+    }
+
+    if (objCategoria.getNomImgPubCategoria() != null && !objCategoria.getNomImgPubCategoria().isEmpty()) {
+
+            String nombreOcuLimpio = objCategoria.getNomImgOcuCategoria();
+            if (nombreOcuLimpio != null) {
+                nombreOcuLimpio = nombreOcuLimpio.replace("@", "").trim();
+            }
+
+            String rutaImagen = Ruta.RUTA_FOTOS + Configuracion.SEPARADOR_CARPETA + nombreOcuLimpio;
+            File archivo = new File(rutaImagen);
+
+            if (archivo.exists()) {
+                Image imagen = new Image(archivo.toURI().toString());
+                imagenPreview.setImage(imagen);
+                cajaImagen.setText(objCategoria.getNomImgPubCategoria());
+                rutaSeleccionada = "";
+            } else {
+                System.err.println("No se encontró la imagen : " + rutaImagen);
+                imagenPreview.setImage(null);
+            }
+        }
     }
 }
